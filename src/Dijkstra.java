@@ -64,6 +64,9 @@ public class Dijkstra {
             currentNode = prioList.removeMin().getData();
             inPrioList[currentNode] = false;
 
+            // Stop if the target is reached
+            if (currentNode == arrivalNode) break;
+
             // Iterate over all the edges departing from that node
             for (DEdge edgeToNext: dEdges.elementAt(currentNode))
             {
