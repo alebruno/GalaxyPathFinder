@@ -36,13 +36,13 @@ public class GalaxyPathFinder extends JPanel implements ActionListener {
 
         // Set proprieties of text fields
         jLabelStart.setText("Startknoten:");
-        jLabelStart.setPreferredSize(new Dimension(90,24));
+        jLabelStart.setPreferredSize(new Dimension(90,26));
         jLabelArrival.setText("Endknoten:");
-        jLabelArrival.setPreferredSize(new Dimension(90,24));
+        jLabelArrival.setPreferredSize(new Dimension(90,26));
         startEntry.setText("Erde");
-        startEntry.setPreferredSize(new Dimension(100,24));
+        startEntry.setPreferredSize(new Dimension(100,26));
         arrivalEntry.setText("b3-r7-r4nd7");
-        arrivalEntry.setPreferredSize(new Dimension(100, 24));
+        arrivalEntry.setPreferredSize(new Dimension(100, 26));
 
         // Create and set proprieties of radio buttons to select the algorithm
         fordButton = new JRadioButton("Bellman-Ford-Algorithmus");
