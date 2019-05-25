@@ -11,7 +11,6 @@ public class Dijkstra {
     private Vector<Vector<DEdge>> directedEdges;
     private int startingNode;
     private int arrivalNode;
-
     private Stack<Integer> shortestPath;
     private double[] distance;
     private int[] previousNode;
@@ -35,7 +34,6 @@ public class Dijkstra {
         previousNode = new int[numberOfNodes];
         inPrioList = new boolean[numberOfNodes];
         Vector<FibonacciHeapNode<Integer>> fibNodes = new Vector<FibonacciHeapNode<Integer>>(numberOfNodes);
-
 
         // Fill the distance array
         for(int i = 0; i < numberOfNodes; i++)
@@ -84,10 +82,6 @@ public class Dijkstra {
                 }
             }
         }
-
-
-
-
     }
 
     /**
