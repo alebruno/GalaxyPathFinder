@@ -7,7 +7,7 @@ import org.jgrapht.util.FibonacciHeapNode;
  * Class to solve the shortest path problem with the Dijkstra's algorithm making use of a Fibonacci heap.
  * @author Alessandro Bruno
  */
-public class Dijkstra {
+public class Dijkstra implements PathFinder {
     private Vector<Vector<DEdge>> directedEdges;
     private int startingNode;
     private int arrivalNode;

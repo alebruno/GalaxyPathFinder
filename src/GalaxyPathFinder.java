@@ -3,6 +3,7 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Stack;
+import java.util.Vector;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -233,11 +234,29 @@ public class GalaxyPathFinder extends JPanel implements ActionListener {
             }
     }
 
+    /**
+     * Factory class. It returns a PathFinder object that solves the problem and can be subsequently queried for results.
+     * @param algorithm the chosen algorithm
+     * @param start the starting node
+     * @param arrival the arrival node
+     * @param dEdges adjacency list representation of the graph
+     * @return the PathFinder object
+     */
+    private PathFinder CreatePathFinder(String algorithm, int start, int arrival, Vector<Vector<DEdge>> dEdges)
+    {
+        if (algorithm.equals("Dijkstra")) // Good choice ;)
+        {
+            return new Dijkstra(start, arrival, dEdges);
+        } else {
+            return new BellmanFord(start, arrival, dEdges);
+        }
+    }
+
     /** Returns an ImageIcon, or null if the path was invalid.
      * @param path file path
      * @return the imageIcon
      */
-    protected static ImageIcon createImageIcon(String path) {
+    private static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = GalaxyPathFinder.class.getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);

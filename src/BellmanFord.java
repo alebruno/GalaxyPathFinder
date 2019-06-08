@@ -5,7 +5,7 @@ import java.util.Vector;
  * Class to solve the shortest path problem with the Bellman-Ford algorithm.
  * @author Alessandro Bruno
  */
-public class BellmanFord {
+public class BellmanFord implements PathFinder {
     private Vector<Vector<DEdge>> directedEdges;
     private int startingNode;
     private int arrivalNode;
