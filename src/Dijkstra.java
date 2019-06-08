@@ -111,4 +111,10 @@ public class Dijkstra implements PathFinder {
         return distance[arrivalNode];
     }
 
+    /**
+     * This function returns the name of the algorithm used to find the shortest path
+     * @return the name of the algorithm
+     */
+    public String getAlgorithmName(){return "Dijkstra-Algorithmus";}
+
 }

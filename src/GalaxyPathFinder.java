@@ -179,47 +179,47 @@ public class GalaxyPathFinder extends JPanel implements ActionListener {
         } else if (e.getSource() == runButton)
             try {
                 log.setText("Die Datei wird gelesen..." + newline);
+                long startPharsingTime = System.nanoTime();
                 GalacticParser galaxy = new GalacticParser(filePath, startEntry.getText(), arrivalEntry.getText());
+                long endPharsingTime = System.nanoTime();
                 log.setText("");
 
-                // The Bellman-Ford algorithm is selected
-                if (fordButton.isSelected()) {
-                    log.append("Berechnung des kürzesten Wegs mit dem Bellman-Ford-Algorithmus." + newline);
-                    log.append("Datei " + filePath + newline);
-                    BellmanFord bfPathFinder = new BellmanFord(galaxy.getStartingNode(), galaxy.getArrivalNode(), galaxy.getAdjacencyList());
-                    if (bfPathFinder.getLength() != Double.POSITIVE_INFINITY)
-                    {
-                        log.append("Kürzester Pfad zwischen " + startEntry.getText() + " und " + arrivalEntry.getText() + ":" + newline + newline);
-                        Stack<Integer> shortestPathStack = bfPathFinder.getShortestPath();
-                        while (!shortestPathStack.empty()) {
-                            log.append(galaxy.getNodeLabels()[shortestPathStack.pop()] + newline);
-                        }
-                        log.append(newline + "Die gesamte Entfernung ist " + bfPathFinder.getLength() + newline);
-                        log.setCaretPosition(log.getDocument().getLength());
-                    } else
-                    {
-                        log.append("Kein Pfad zwischen " + startEntry.getText() + " und " + arrivalEntry.getText() + "." + newline);
-                    }
-
-                    // The Dijkstra Algorithm is selected
-                } else {
+                String chosenAlgorithm;
+                if(dijkButton.isSelected()) // The Dijkstra Algorithm is selected
+                {
                     log.append("Berechnung des kürzesten Wegs mit dem Dijkstra-Algorithmus." + newline);
-                    log.append("Datei " + filePath + newline);
-                    Dijkstra dijkstraPathFinder = new Dijkstra(galaxy.getStartingNode(), galaxy.getArrivalNode(), galaxy.getAdjacencyList());
-                    if (dijkstraPathFinder.getLength() != Double.POSITIVE_INFINITY)
-                    {
-                        log.append("Kürzester Pfad zwischen " + startEntry.getText() + " und " + arrivalEntry.getText() + ":" + newline + newline);
-                        Stack<Integer> shortestPathStack = dijkstraPathFinder.getShortestPath();
-                        while (!shortestPathStack.empty()) {
-                            log.append(galaxy.getNodeLabels()[shortestPathStack.pop()] + newline);
-                        }
-                        log.append(newline + "Die gesamte Entfernung ist " + dijkstraPathFinder.getLength() + newline);
-                        log.setCaretPosition(log.getDocument().getLength());
-                    } else
-                    {
-                        log.append("Kein Pfad zwischen " + startEntry.getText() + " und " + arrivalEntry.getText() + "." + newline);
-                    }
+                    chosenAlgorithm = "Dijkstra";
+                } else { // The Bellman-Ford algorithm is selected
+                    log.append("Berechnung des kürzesten Wegs mit dem Bellman-Ford-Algorithmus." + newline);
+                    chosenAlgorithm = "Bellman-Ford";
                 }
+
+                long endSolvingTime = System.nanoTime(); // Initialize starting and ending time to the same value (delta is 0 if no path is found)
+                long startSolvingTime = System.nanoTime();
+                PathFinder pathFinder = CreatePathFinder(chosenAlgorithm,galaxy.getStartingNode(), galaxy.getArrivalNode(), galaxy.getAdjacencyList());
+
+                if (pathFinder.getLength() != Double.POSITIVE_INFINITY) // A path has been found
+                {
+                    Stack<Integer> shortestPathStack = pathFinder.getShortestPath();
+                    endSolvingTime = System.nanoTime();
+                    log.append("Kürzester Pfad zwischen " + startEntry.getText() + " und " + arrivalEntry.getText() + ":" + newline + newline);
+                    while (!shortestPathStack.empty()) {
+                        log.append(galaxy.getNodeLabels()[shortestPathStack.pop()] + newline);
+                    }
+                    log.append(newline + "Die gesamte Entfernung ist " + pathFinder.getLength() + newline);
+                    log.setCaretPosition(log.getDocument().getLength());
+                } else // No path has been found
+                {
+                    log.append("Kein Pfad zwischen " + startEntry.getText() + " und " + arrivalEntry.getText() + "." + newline);
+                }
+
+                String timeToParse = String.format ("%.3f", (((double) (endPharsingTime - startPharsingTime)) / 1000000));
+                String timeToSolve = String.format ("%.3f", (((double) (endSolvingTime - startSolvingTime)) / 1000000));
+
+                log.append(newline + "Laufzeit:" + newline);
+                log.append("Parsen "  + timeToParse + " ms" + newline);
+                log.append("Berechnung mit dem " + pathFinder.getAlgorithmName() + ": " + timeToSolve + " ms");
+
             } catch (IOException anException) {
                 anException.printStackTrace();
                 log.append("Fehler beim Öffnen der Datei." + newline);
@@ -282,7 +282,7 @@ public class GalaxyPathFinder extends JPanel implements ActionListener {
         frame.pack();
 
         // Set some proprieties
-        frame.setSize(600, 600);
+        frame.setSize(600, 700);
         frame.setResizable(false);
         frame.setVisible(true);
     }

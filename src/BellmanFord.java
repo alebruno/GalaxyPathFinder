@@ -100,4 +100,10 @@ public class BellmanFord implements PathFinder {
         return distance[arrivalNode];
     }
 
+    /**
+     * This function returns the name of the algorithm used to find the shortest path
+     * @return the name of the algorithm
+     */
+    public String getAlgorithmName(){return "Bellman-Ford-Algorithmus.";}
+
 }

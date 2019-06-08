@@ -7,4 +7,5 @@ import java.util.Stack;
 public interface PathFinder {
     public Stack<Integer> getShortestPath();
     public double getLength();
+    public String getAlgorithmName();
 }
